@@ -1,12 +1,13 @@
-from aiogram import Bot, Dispatcher, executor, types
-from aiogram.dispatcher import FSMContext
-from aiogram.contrib.fsm_storage.memory import MemoryStorage
-from aiogram.types import InputFile
 from asyncio import sleep
 from io import BytesIO
+
+from aiogram import Bot, Dispatcher, executor, types
+from aiogram.contrib.fsm_storage.memory import MemoryStorage
+from aiogram.dispatcher import FSMContext
+from aiogram.types import InputFile
+
 from .settings import BotSettings
 from .templates import TemplatesManager
-
 
 bot = Bot(token=BotSettings.token())
 dp = Dispatcher(bot, storage=MemoryStorage())

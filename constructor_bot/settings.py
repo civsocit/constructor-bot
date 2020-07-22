@@ -1,6 +1,8 @@
-from dotenv import load_dotenv
 import os
 from typing import Tuple
+
+from dotenv import load_dotenv
+
 load_dotenv()
 
 
@@ -31,8 +33,7 @@ class DesignerSettings:
     @classmethod
     def path_to_font(cls) -> str:
         # TODO: load font from backend
-        from os.path import join
-        from os.path import dirname, abspath
+        from os.path import abspath, dirname, join
         return join(abspath(dirname(__file__)), "designer", "19681.ttf")
 
     @classmethod
