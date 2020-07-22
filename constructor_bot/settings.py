@@ -18,7 +18,7 @@ class DesignerSettings:
     @classmethod
     def font_size(cls) -> int:
         # TODO: read that parameter from backend
-        return 100
+        return 130
 
     @classmethod
     def max_text_width(cls) -> int:

@@ -1,7 +1,9 @@
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.dispatcher import FSMContext
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
+from aiogram.types import InputFile
 from asyncio import sleep
+from io import BytesIO
 from .settings import BotSettings
 from .templates import TemplatesManager
 
@@ -41,8 +43,8 @@ async def process_text(message: types.Message, state: FSMContext):
                                  "/templates")
         else:
             file = templates_manager.process_template(template, message.text)
-            await message.answer_photo(file)
-            await message.answer_document(file, caption=f"{template}_poster.png")
+            await message.answer_photo(file)  # Send preview
+            await message.answer_document(InputFile(BytesIO(file), filename=f"{template}_poster.png"))  # and full size
 
 
 @dp.callback_query_handler()
