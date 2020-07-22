@@ -7,7 +7,10 @@ load_dotenv()
 class BotSettings:
     @classmethod
     def token(cls) -> str:
-        return os.getenv("TOKEN")
+        token = os.getenv("TOKEN")
+        if not token:
+            raise ValueError("Token must be specified (missing .env file or TOKEN environment variable?)")
+        return token
 
     @classmethod
     def templates_refresh_time(cls) -> int:

@@ -13,9 +13,10 @@ class TemplatesManager:
         from asyncio import sleep
         await sleep(1)
 
-        with open("constructor_bot/templates/foo.jpg", "rb") as photo:
+        # TODO: read from backend
+        with open("constructor_bot/templates/example2.jpg", "rb") as photo:
             self._templates["foo"] = photo.read()
-        with open("constructor_bot/templates/bar.jpg", "rb") as photo:
+        with open("constructor_bot/templates/example1.jpg", "rb") as photo:
             self._templates["bar"] = photo.read()
 
     def all_templates(self) -> Dict[str, bytes]:

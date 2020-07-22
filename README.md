@@ -1,8 +1,9 @@
 # constructor-bot
 Telegram бот конструктор плакатов для Гражданского Общества
 
-Запуск:
+Установка зависимостей и запуск:
 ```
+poetry install --no-root
 poetry run bot
 ```
 
