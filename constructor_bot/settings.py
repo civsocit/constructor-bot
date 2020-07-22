@@ -9,6 +9,10 @@ class BotSettings:
     def token(cls) -> str:
         return os.getenv("TOKEN")
 
+    @classmethod
+    def templates_refresh_time(cls) -> int:
+        return 30  # Refresh templates list every 30 seconds
+
 
 class DesignerSettings:
     @classmethod
