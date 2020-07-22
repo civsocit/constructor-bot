@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "constructor-bot"
+version = "0.1.0"
+description = "Constructor bot for civsoc"
+authors = ["mihalin <stopa3.10.1996@mail.ru>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+aiogram = "^2.9.2"
+python-dotenv = "^0.14.0"
+Pillow = "^7.2.0"
+aiohttp = "^3.6.2"
+
+[tool.poetry.dev-dependencies]
+
+[tool.poetry.scripts]
+bot = "constructor_bot:main"
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
+
