@@ -21,11 +21,6 @@ class BotSettings:
 
 class DesignerSettings:
     @classmethod
-    def font_size(cls) -> int:
-        # TODO: read that parameter from backend
-        return 130
-
-    @classmethod
     def max_text_width(cls) -> int:
         # TODO: read that parameter from backend
         return 20
@@ -34,9 +29,16 @@ class DesignerSettings:
     def path_to_font(cls) -> str:
         # TODO: load font from backend
         from os.path import abspath, dirname, join
-        return join(abspath(dirname(__file__)), "designer", "19681.ttf")
+        return join(abspath(dirname(__file__)), "designer", "main.ttf")
 
     @classmethod
     def text_color(cls) -> Tuple[int, int, int]:
         # TODO: read that parameter from backend
         return 255, 255, 255
+
+    @classmethod
+    def text_position(cls) -> Tuple[float, float, float, float]:
+        # TODO: read that parameter from backend
+        # Relative position x0, y0, x1, y1
+        return (0.088, 0.250,
+                0.912, 0.625)

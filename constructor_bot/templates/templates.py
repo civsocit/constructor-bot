@@ -1,6 +1,36 @@
-from typing import Dict
-
+from typing import Dict, Tuple
+from PIL import Image
+from io import BytesIO
+from copy import copy
 from constructor_bot.designer import add_text_on_image
+
+
+class Template:
+    def __init__(self, path: str, name: str):
+        """
+        Create image template
+        :param path: path to .eps file
+        """
+        self._pil_image = Image.open(path)
+        self._pil_image.load(scale=4)
+
+        self._name = name
+
+        with BytesIO() as output:
+            self._pil_image.save(output, format="PNG")
+            self._png_preview = output.getvalue()
+
+    @property
+    def name(self) -> str:
+        return self._name
+
+    @property
+    def pil_image(self):
+        return copy(self._pil_image)
+
+    @property
+    def preview(self) -> bytes:
+        return copy(self._png_preview)
 
 
 class TemplatesManager:
@@ -15,13 +45,11 @@ class TemplatesManager:
         await sleep(1)
 
         # TODO: read from backend
-        with open("constructor_bot/templates/example2.jpg", "rb") as photo:
-            self._templates["foo"] = photo.read()
-        with open("constructor_bot/templates/example1.jpg", "rb") as photo:
-            self._templates["bar"] = photo.read()
+        self._templates["blue"] = Template("constructor_bot/templates/Poster-Blue.eps", "blue")
+        self._templates["red"] = Template("constructor_bot/templates/Poster-Red.eps", "red")
 
-    def all_templates(self) -> Dict[str, bytes]:
+    def all_templates(self) -> Dict[str, Template]:
         return self._templates
 
-    def process_template(self, identifier: str, text: str) -> bytes:
-        return add_text_on_image(self._templates[identifier], text)
+    def process_template(self, identifier: str, text: str) -> Tuple[bytes, bytes]:
+        return add_text_on_image(self._templates[identifier].pil_image, text)

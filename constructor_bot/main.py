@@ -30,7 +30,7 @@ async def templates_list(message: types.Message):
     for name, template in templates.items():
         keyboard = types.InlineKeyboardMarkup()
         keyboard.add(types.InlineKeyboardButton(f"Выбрать {name}", callback_data=name))
-        await message.answer_photo(template, reply_markup=keyboard)
+        await message.answer_photo(template.preview, reply_markup=keyboard)
 
 
 @dp.message_handler(content_types=["text"])
@@ -43,9 +43,9 @@ async def process_text(message: types.Message, state: FSMContext):
             await message.answer("Такого шаблона больше нет в списке шаблонов. Выберите другой шаблон из списка "
                                  "/templates")
         else:
-            file = templates_manager.process_template(template, message.text)
-            await message.answer_photo(file)  # Send preview
-            await message.answer_document(InputFile(BytesIO(file), filename=f"{template}_poster.png"))  # and full size
+            preview, pdf = templates_manager.process_template(template, message.text)
+            await message.answer_photo(preview)
+            await message.answer_document(InputFile(BytesIO(pdf), filename=f"{template}_poster.pdf"))
 
 
 @dp.callback_query_handler()
