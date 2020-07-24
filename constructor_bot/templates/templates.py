@@ -1,7 +1,9 @@
-from typing import Dict, Tuple
-from PIL import Image
-from io import BytesIO
 from copy import copy
+from io import BytesIO
+from typing import Dict, Tuple
+
+from PIL import Image
+
 from constructor_bot.designer import add_text_on_image
 
 

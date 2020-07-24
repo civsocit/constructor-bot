@@ -1,9 +1,10 @@
 import io
 from typing import Tuple
+
 from PIL import Image, ImageDraw, ImageFont
 
-from ..settings import DesignerSettings
 from ..optimizator import optimize_font_size
+from ..settings import DesignerSettings
 
 
 def add_text_on_image(pil_image, text: str) -> Tuple[bytes, bytes]:

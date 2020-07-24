@@ -1,9 +1,9 @@
-from scipy.optimize import minimize
-import numpy as np
 import textwrap
-from PIL import ImageDraw, ImageFont
-
 from typing import Tuple
+
+import numpy as np
+from PIL import ImageDraw, ImageFont
+from scipy.optimize import minimize
 
 
 def _vec_to_val(x) -> Tuple[int, int]:
