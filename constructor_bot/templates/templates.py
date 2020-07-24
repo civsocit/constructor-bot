@@ -40,13 +40,12 @@ class TemplatesManager:
         self._templates = dict()
 
     async def update_templates(self):
-        self._templates = dict()
-
         # Debug ...
         from asyncio import sleep
         await sleep(1)
 
         # TODO: read from backend
+        self._templates = dict()
         self._templates["blue"] = Template("constructor_bot/templates/Poster-Blue.eps", "blue")
         self._templates["red"] = Template("constructor_bot/templates/Poster-Red.eps", "red")
 
