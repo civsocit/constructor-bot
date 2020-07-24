@@ -43,6 +43,7 @@ async def process_text(message: types.Message, state: FSMContext):
             await message.answer("Такого шаблона больше нет в списке шаблонов. Выберите другой шаблон из списка "
                                  "/templates")
         else:
+            await message.answer("Рисую плакат, ждите ... (до ~15 секунд)")
             preview, pdf = templates_manager.process_template(template, message.text)
             await message.answer_photo(preview)
             await message.answer_document(InputFile(BytesIO(pdf), filename=f"{template}_poster.pdf"))
@@ -55,8 +56,8 @@ async def process_callback(callback_query: types.CallbackQuery, state: FSMContex
     if template not in templates_manager.all_templates():
         await bot.send_message(callback_query.from_user.id, "Такого шаблона не существует")
         return
-    await bot.send_message(callback_query.from_user.id, f"Выбран шаблон {template}, теперь отправьте текст "
-                                                        f"для шаблона (/templates чтобы вернуться к списку)")
+    await bot.send_message(callback_query.from_user.id, f"Выбран шаблон {template}, теперь отправьте текст для плаката."
+                                                        f"\n\nЧтобы вернуться к списку шаблонов отправьте /templates")
     async with state.proxy() as proxy:
         proxy['template'] = template
 
