@@ -13,13 +13,15 @@ class Template:
         Create image template
         :param path: path to .eps file
         """
-        self._pil_image = Image.open(path)
-        self._pil_image.load(scale=4)
-
         self._name = name
 
+        self._pil_image = Image.open(path)
+        self._pil_image.load(scale=4)  # High resolution
+
         with BytesIO() as output:
-            self._pil_image.save(output, format="PNG")
+            preview = Image.open(path)
+            preview.load(scale=1)  # Low resolution for preview
+            preview.save(output, format="PNG")
             self._png_preview = output.getvalue()
 
     @property
