@@ -68,4 +68,4 @@ def optimize_font_size(image, max_width: int, max_height: int, text: str, font_p
             min_res = res
 
     font_size, max_text_len = _vec_to_val(best.x)
-    return font_size,  _wrap_word(text, max_text_len)
+    return font_size, _wrap_word(text, max_text_len)

@@ -42,6 +42,7 @@ class TemplatesManager:
     async def update_templates(self):
         # Debug ...
         from asyncio import sleep
+
         await sleep(1)
 
         # TODO: read from backend

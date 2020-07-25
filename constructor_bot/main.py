@@ -19,8 +19,10 @@ async def start(message: types.Message, state: FSMContext):
     async with state.proxy() as proxy:
         proxy.pop("template", None)  # Reset current user template
 
-    await message.answer("Привет. Это бот для создания шаблонных постеров Гражданского Общества. Отправь /templates "
-                         "чтобы получить список шаблонов")
+    await message.answer(
+        "Привет. Это бот для создания шаблонных постеров Гражданского Общества. Отправь /templates "
+        "чтобы получить список шаблонов"
+    )
 
 
 @dp.message_handler(commands=["templates"])
@@ -36,12 +38,13 @@ async def templates_list(message: types.Message):
 @dp.message_handler(content_types=["text"])
 async def process_text(message: types.Message, state: FSMContext):
     async with state.proxy() as proxy:
-        template = proxy.get('template', None)
+        template = proxy.get("template", None)
         if not template:
             await message.answer("Сначала выберите шаблон в меню /templates")
         elif template not in templates_manager.all_templates():
-            await message.answer("Такого шаблона больше нет в списке шаблонов. Выберите другой шаблон из списка "
-                                 "/templates")
+            await message.answer(
+                "Такого шаблона больше нет в списке шаблонов. Выберите другой шаблон из списка " "/templates"
+            )
         else:
             await message.answer("Рисую плакат, ждите ... (до ~15 секунд)")
             preview, pdf = templates_manager.process_template(template, message.text)
@@ -56,10 +59,13 @@ async def process_callback(callback_query: types.CallbackQuery, state: FSMContex
     if template not in templates_manager.all_templates():
         await bot.send_message(callback_query.from_user.id, "Такого шаблона не существует")
         return
-    await bot.send_message(callback_query.from_user.id, f"Выбран шаблон {template}, теперь отправьте текст для плаката."
-                                                        f"\n\nЧтобы вернуться к списку шаблонов отправьте /templates")
+    await bot.send_message(
+        callback_query.from_user.id,
+        f"Выбран шаблон {template}, теперь отправьте текст для плаката."
+        f"\n\nЧтобы вернуться к списку шаблонов отправьте /templates",
+    )
     async with state.proxy() as proxy:
-        proxy['template'] = template
+        proxy["template"] = template
 
 
 async def templates_refresh_loop():

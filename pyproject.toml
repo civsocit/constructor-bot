@@ -16,7 +16,23 @@ scipy = "^1.5.1"
 
 [tool.poetry.dev-dependencies]
 isort = "^5.1.4"
+pre-commit = "^2.6.0"
+black = {version = "^19.10b0", allow-prereleases = true}
 
+[tool.isort]
+line_length = 120
+multi_line_output = 3
+include_trailing_comma = true
+default_section = "THIRDPARTY"
+known_first_party = "constructor_bot"
+
+[tool.black]
+line-length = 120
+exclude = '''
+/(
+    \.git
+)/
+'''
 
 [tool.poetry.scripts]
 bot = "constructor_bot:main"
