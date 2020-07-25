@@ -31,11 +31,13 @@ def add_text_on_image(pil_image, text: str) -> Tuple[bytes, bytes]:
 
     # Convert to bytes
     with io.BytesIO() as output:
-        pil_image.save(output, format="PNG")
-        preview = output.getvalue()  # PNG preview
-
-    with io.BytesIO() as output:
         pil_image.save(output, format="PDF")
         pdf = output.getvalue()  # Original size
+
+    # Convert to bytes for preview
+    with io.BytesIO() as output:
+        pil_image.thumbnail((DesignerSettings.default_preview_width(), DesignerSettings.default_width()))
+        pil_image.save(output, format="PNG")
+        preview = output.getvalue()  # PNG preview
 
     return preview, pdf
