@@ -1,7 +1,7 @@
 import io
 from typing import Tuple
 
-from PIL import Image, ImageDraw, ImageFont
+from PIL import ImageDraw, ImageFont
 
 from ..optimizator import optimize_font_size
 from ..settings import DesignerSettings
