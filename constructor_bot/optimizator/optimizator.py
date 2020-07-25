@@ -23,7 +23,7 @@ def _wrap_word(text: str, w: int) -> str:
     :param w: max line length
     :return: Wrapped word
     """
-    return "\n".join(textwrap.wrap(text, w))
+    return "\n".join(textwrap.wrap(text, w, replace_whitespace=False, break_long_words=False))
 
 
 def optimize_font_size(image, max_width: int, max_height: int, text: str, font_path: str) -> Tuple[int, str]:

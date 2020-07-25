@@ -43,7 +43,7 @@ async def process_text(message: types.Message, state: FSMContext):
             await message.answer("Сначала выберите шаблон в меню /templates")
         elif template not in templates_manager.all_templates():
             await message.answer(
-                "Такого шаблона больше нет в списке шаблонов. Выберите другой шаблон из списка " "/templates"
+                "Такого шаблона больше нет в списке шаблонов. Выберите другой шаблон из списка /templates"
             )
         else:
             await message.answer("Рисую плакат, ждите ... (до ~15 секунд)")
