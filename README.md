@@ -2,7 +2,9 @@
 Telegram бот конструктор плакатов для Гражданского Общества
 
 Установка зависимостей и запуск:
+Создайте новое окружение и выполните
 ```
+pip install poetry
 poetry install --no-root
 pre-commit install
 poetry run bot
