@@ -6,6 +6,7 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher import FSMContext
 from aiogram.types import InputFile
 
+from .access import AccessMiddleware
 from .settings import BotSettings
 from .templates import TemplatesManager
 
@@ -75,5 +76,6 @@ async def templates_refresh_loop():
 
 
 def main():
+    dp.middleware.setup(AccessMiddleware(BotSettings.access_chat_id()))
     dp.loop.create_task(templates_refresh_loop())
     executor.start_polling(dp, skip_updates=True)

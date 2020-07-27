@@ -18,6 +18,10 @@ class BotSettings:
     def templates_refresh_time(cls) -> int:
         return 120  # in seconds
 
+    @classmethod
+    def access_chat_id(cls) -> int:
+        return -434380704
+
 
 class DesignerSettings:
     @classmethod
