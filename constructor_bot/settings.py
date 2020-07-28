@@ -22,6 +22,10 @@ class BotSettings:
     def access_chat_id(cls) -> int:
         return -434380704
 
+    @classmethod
+    def access_cache_ttl(cls) -> int:
+        return 30  # in seconds
+
 
 class DesignerSettings:
     @classmethod
