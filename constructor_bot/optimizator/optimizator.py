@@ -53,7 +53,7 @@ def optimize_font_size(image, max_width: int, max_height: int, text: str, font_p
 
         if text_width > max_width or text_height > max_height:
             # Font is TOO big: minimize
-            return (max_width - text_width) ** 2 + (max_height - text_height) ** 2
+            return max(text_width - max_width, 0) + max(text_height - max_height, 0)
 
         return -font_size  # Font size must be biggest
 
@@ -65,7 +65,7 @@ def optimize_font_size(image, max_width: int, max_height: int, text: str, font_p
         start[1] = s
         res = minimize(_target, start, method="Powell")
         if abs(best.fun) < abs(res.fun):
-            min_res = res
+            best = res
 
     font_size, max_text_len = _vec_to_val(best.x)
     return font_size, _wrap_word(text, max_text_len)
