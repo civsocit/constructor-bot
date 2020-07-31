@@ -1,6 +1,10 @@
 from copy import copy
 from io import BytesIO
-from typing import Dict, Tuple
+from os import listdir
+from os.path import basename, dirname
+from os.path import join as join_path
+from os.path import realpath
+from typing import Dict, Iterable, Tuple
 
 from PIL import Image
 
@@ -9,12 +13,12 @@ from constructor_bot.settings import DesignerSettings
 
 
 class Template:
-    def __init__(self, path: str, name: str):
+    def __init__(self, path: str):
         """
         Create image template
         :param path: path to .eps file
         """
-        self._name = name
+        self._name = basename(path)
 
         self._pil_image = Image.open(path)
         scale = round(DesignerSettings.default_width() / self._pil_image.width)
@@ -41,19 +45,27 @@ class Template:
 
 
 class TemplatesManager:
+
+    _path_to_templates: str = dirname(realpath(__file__))
+    _template_format: str = "eps"
+
     def __init__(self):
         self._templates = dict()
 
+    @classmethod
+    def _template_files(cls) -> Iterable[str]:
+        for filename in listdir(cls._path_to_templates):
+            path = join_path(cls._path_to_templates, filename)
+            if path.endswith(cls._template_format):
+                yield path
+
     async def update_templates(self):
-        # Debug ...
-        from asyncio import sleep
-
-        await sleep(1)
-
-        # TODO: read from backend
+        # TODO: read from backend?
         self._templates = dict()
-        self._templates["blue"] = Template("constructor_bot/templates/Poster-Blue.eps", "blue")
-        self._templates["red"] = Template("constructor_bot/templates/Poster-Red.eps", "red")
+
+        for path in self._template_files():
+            template = Template(path)
+            self._templates[template.name] = template
 
     def all_templates(self) -> Dict[str, Template]:
         return self._templates
