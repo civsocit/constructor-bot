@@ -26,6 +26,10 @@ class AccessMiddleware(BaseMiddleware):
         super(AccessMiddleware, self).__init__()
 
     async def on_process_message(self, message: types.Message, data: dict):
+        if message.chat.id < 0:  # Group chats are not allowed
+            await message.answer("Для общения с ботом используйте личные сообщения")
+            raise CancelHandler()
+
         if not await _check_user(message.from_user.id, self._access_chat_id):
-            await message.answer(f"Вы должны быть участником тематического чата для доступа к Конструктору Плакатов")
+            await message.answer("Вы должны быть участником тематического чата для доступа к Конструктору Плакатов")
             raise CancelHandler()
