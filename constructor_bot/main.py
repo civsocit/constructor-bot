@@ -66,6 +66,16 @@ async def remove_template(message: types.Message, state: FSMContext):
             await message.answer("Шаблон удалён")
 
 
+@dp.message_handler(commands=["chat_id"])
+async def get_chat_id(message: types.Message):
+    """
+    Get current chat ID (for privileges settings)
+    :param message:
+    :return:
+    """
+    await message.answer(message.chat.id)
+
+
 @dp.message_handler(content_types=[types.ContentType.DOCUMENT])
 @root_only()
 async def receive_file(message: types.Message, state: FSMContext):
