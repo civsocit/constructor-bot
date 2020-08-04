@@ -28,6 +28,19 @@ def root_only():
     return decorator
 
 
+def public():
+    """
+    Decorator for public commands
+    :return:
+    """
+
+    def decorator(func):
+        setattr(func, "public_allowed", True)
+        return func
+
+    return decorator
+
+
 @cached(ttl=BotSettings.access_cache_ttl())
 async def _get_privileges(user_id: int, chat_id: int) -> Privileges:
     """
@@ -55,7 +68,15 @@ class AccessMiddleware(BaseMiddleware):
         handler = current_handler.get()
         return handler and getattr(handler, "admin_only", False)
 
+    @classmethod
+    def _is_public_command(cls) -> bool:
+        handler = current_handler.get()
+        return handler and getattr(handler, "public_allowed", False)
+
     async def on_process_message(self, message: types.Message, data: dict):
+        if self._is_public_command():  # Public commands allowed
+            return
+
         if message.chat.id < 0:  # Group chats are not allowed
             await message.answer("Для общения с ботом используйте личные сообщения")
             raise CancelHandler()

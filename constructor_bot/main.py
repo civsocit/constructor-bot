@@ -5,7 +5,9 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.dispatcher import FSMContext
 from aiogram.types import InputFile
 
-from .access import AccessMiddleware, root_only
+from .access import AccessMiddleware
+from .access import public as public_command
+from .access import root_only
 from .settings import BotSettings
 from .templates import TemplatesManager
 
@@ -67,6 +69,7 @@ async def remove_template(message: types.Message, state: FSMContext):
 
 
 @dp.message_handler(commands=["chat_id"])
+@public_command()  # Everyone can call
 async def get_chat_id(message: types.Message):
     """
     Get current chat ID (for privileges settings)
