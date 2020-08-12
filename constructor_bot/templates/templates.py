@@ -13,6 +13,25 @@ from constructor_bot.designer import add_text_on_image
 from constructor_bot.settings import DesignerSettings
 
 
+def calculate_brightness(image) -> float:
+    """
+    Get image brightness
+    https://gist.github.com/kmohrf/8d4653536aaa88965a69a06b81bcb022
+    :param image:
+    :return:
+    """
+    greyscale_image = image.convert("L")
+    histogram = greyscale_image.histogram()
+    pixels = sum(histogram)
+    brightness = scale = len(histogram)
+
+    for index in range(0, scale):
+        ratio = histogram[index] / pixels
+        brightness += ratio * (-scale + index)
+
+    return 1 if brightness == 255 else brightness / scale
+
+
 class Template:
     def __init__(self, path: str):
         """
@@ -23,6 +42,12 @@ class Template:
         self._path = path
 
         self._pil_image = Image.open(path)
+
+        if calculate_brightness(self._pil_image) > DesignerSettings.text_brightness_threshold():
+            self._text_color = DesignerSettings.text_color_dark()
+        else:
+            self._text_color = DesignerSettings.text_color_light()
+
         scale = round(DesignerSettings.default_width() / self._pil_image.width)
         scale = max(scale, 1)  # Scale must be >= 1
         self._pil_image.load(scale=scale)  # High resolution
@@ -48,6 +73,10 @@ class Template:
     @property
     def preview(self) -> bytes:
         return copy(self._png_preview)
+
+    @property
+    def text_color(self):
+        return self._text_color
 
 
 class TemplatesManager:
@@ -93,4 +122,5 @@ class TemplatesManager:
         return self._templates
 
     def process_template(self, identifier: str, text: str) -> Tuple[bytes, bytes]:
-        return add_text_on_image(self._templates[identifier].pil_image, text)
+        template = self._templates[identifier]
+        return add_text_on_image(template.pil_image, text, template.text_color)

@@ -7,7 +7,7 @@ from ..optimizator import optimize_font_size
 from ..settings import DesignerSettings
 
 
-def add_text_on_image(pil_image, text: str) -> Tuple[bytes, bytes]:
+def add_text_on_image(pil_image, text: str, color: Tuple[int, int, int]) -> Tuple[bytes, bytes]:
     """
     Add text on Pillow image
     :param pil_image: Pillow image
@@ -27,7 +27,7 @@ def add_text_on_image(pil_image, text: str) -> Tuple[bytes, bytes]:
     text_width, text_height = draw.textsize(wrapped_text, font)
 
     position = (x0 + (x1 - x0 - text_width) / 2, y0 + (y1 - y0 - text_height) / 2)
-    draw.text(position, wrapped_text, DesignerSettings.text_color(), font=font, align="center")
+    draw.text(position, wrapped_text, color, font=font, align="center")
 
     # Convert to bytes
     with io.BytesIO() as output:

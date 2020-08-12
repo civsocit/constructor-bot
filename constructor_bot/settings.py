@@ -36,9 +36,19 @@ class DesignerSettings:
         return join(abspath(dirname(__file__)), "designer", "main.ttf")
 
     @classmethod
-    def text_color(cls) -> Tuple[int, int, int]:
+    def text_color_light(cls) -> Tuple[int, int, int]:
         # TODO: read that parameter from backend
-        return 255, 255, 255
+        return 0xE1, 0xE6, 0xEB
+
+    @classmethod
+    def text_color_dark(cls) -> Tuple[int, int, int]:
+        # TODO: read that parameter from backend
+        return 0x19, 0x2D, 0x44
+
+    @classmethod
+    def text_brightness_threshold(cls) -> float:
+        # TODO: read that parameter from backend
+        return 0.7  # Dark text will appear on the image with a brightness level greater than 0.7
 
     @classmethod
     def text_position(cls) -> Tuple[float, float, float, float]:
@@ -48,7 +58,7 @@ class DesignerSettings:
 
     @classmethod
     def default_width(cls) -> int:
-        # A3 size 16.54 inh with 150 DPI
+        # A3 size 16.54 inh with 200 DPI
         # Warning: Pillow uses discrete scale factor, so, 150 or 170 DPI may be equal
         return int(16.54 * 200.0)
 
