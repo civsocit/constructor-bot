@@ -1,5 +1,6 @@
 from copy import copy
 from io import BytesIO
+from math import ceil
 from os import listdir, remove
 from os.path import basename, dirname
 from os.path import join as join_path
@@ -48,8 +49,7 @@ class Template:
         else:
             self._text_color = DesignerSettings.text_color_light()
 
-        scale = round(DesignerSettings.default_width() / self._pil_image.width)
-        scale = max(scale, 1)  # Scale must be >= 1
+        scale = ceil(DesignerSettings.default_width() / self._pil_image.width)
         self._pil_image.load(scale=scale)  # High resolution
 
         with BytesIO() as output:
