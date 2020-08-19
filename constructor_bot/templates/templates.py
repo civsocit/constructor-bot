@@ -43,14 +43,13 @@ class Template:
         self._path = path
 
         self._pil_image = Image.open(path)
+        scale = ceil(DesignerSettings.default_width() / self._pil_image.width)
+        self._pil_image.load(scale=scale)  # High resolution
 
         if calculate_brightness(self._pil_image) > DesignerSettings.text_brightness_threshold():
             self._text_color = DesignerSettings.text_color_dark()
         else:
             self._text_color = DesignerSettings.text_color_light()
-
-        scale = ceil(DesignerSettings.default_width() / self._pil_image.width)
-        self._pil_image.load(scale=scale)  # High resolution
 
         with BytesIO() as output:
             preview = self.pil_image
