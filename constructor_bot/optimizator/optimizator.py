@@ -1,4 +1,5 @@
 import textwrap
+from functools import lru_cache
 from typing import Tuple
 
 import numpy as np
@@ -26,6 +27,29 @@ def _wrap_word(text: str, w: int) -> str:
     return "\n".join(textwrap.wrap(text, w, replace_whitespace=False, break_long_words=False))
 
 
+@lru_cache()
+def _target(
+    font_size: int, max_text_len: int, max_width: int, max_height: int, text: str, path_to_font: str, drawer
+) -> int:
+    """
+    Minimize me!
+    :param font_size:
+    :param max_text_len:
+    :param drawer:
+    :return:
+    """
+    wrapped = _wrap_word(text, max_text_len)
+    font = ImageFont.truetype(path_to_font, font_size)
+
+    text_width, text_height = drawer.textsize(wrapped, font)
+
+    if text_width > max_width or text_height > max_height:
+        # Font is TOO big: minimize
+        return max(text_width - max_width, 0) + max(text_height - max_height, 0)
+
+    return -font_size  # Font size must be biggest
+
+
 def optimize_font_size(image, max_width: int, max_height: int, text: str, font_path: str) -> Tuple[int, str]:
     """
     Optimize font size and word wrap for image
@@ -38,7 +62,7 @@ def optimize_font_size(image, max_width: int, max_height: int, text: str, font_p
     """
     draw = ImageDraw.Draw(image)
 
-    def _target(x):
+    def target(x):
         """
         Minimize me!
         :param x: [font size, word wrap value]
@@ -46,26 +70,16 @@ def optimize_font_size(image, max_width: int, max_height: int, text: str, font_p
         """
         font_size, max_text_len = _vec_to_val(x)
 
-        wrapped = _wrap_word(text, max_text_len)
-        font = ImageFont.truetype(font_path, font_size)
+        res = _target(font_size, max_text_len, max_width, max_height, text, font_path, draw)
+        return res
 
-        text_width, text_height = draw.textsize(wrapped, font)
-
-        if text_width > max_width or text_height > max_height:
-            # Font is TOO big: minimize
-            return max(text_width - max_width, 0) + max(text_height - max_height, 0)
-
-        return -font_size  # Font size must be biggest
-
-    # Value to start optimization
-    start = np.array([1, 1])  # x[0] - font size, x[1] - word wrap max phrase length
-    best = minimize(_target, start, method="Powell")
-    # Try 1, 5, 10... word wrap start values - it helps to find the best solution
-    for s in range(1, 30, 5):
-        start[1] = s
-        res = minimize(_target, start, method="Powell")
-        if abs(best.fun) < abs(res.fun):
-            best = res
-
+    # x[0] - font size, x[1] - word wrap max phrase length
+    # For better optimization, try different initial values
+    best = min(
+        minimize(target, np.array([1, 5]), method="powell"),
+        minimize(target, np.array([1, 15]), method="powell"),
+        minimize(target, np.array([1, 25]), method="powell"),
+        key=lambda x: x.fun,
+    )
     font_size, max_text_len = _vec_to_val(best.x)
     return font_size, _wrap_word(text, max_text_len)
