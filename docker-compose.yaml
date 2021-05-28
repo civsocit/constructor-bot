@@ -1,0 +1,8 @@
+version: "3.3"
+services:
+  bot:
+    container_name: constructor-bot
+    restart: unless-stopped
+    build: .
+    env_file:
+      - .env
